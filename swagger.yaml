@@ -1,0 +1,172 @@
+swagger: "2.2.1"
+info:
+  version: "1.0.0"
+  title: service-euro-millions
+basePath: /api/v1/
+produces:
+  - application/json
+paths:
+  /euro-millions/random:
+    get:
+      operationId: GetRandom
+      summary: Get Random Euro Million Result
+      tags:
+        - Euro Millions
+      responses:
+        "200":
+          description: get random euro million result
+          schema:
+            $ref: '#/definitions/EuroMillionResponse'
+        "500":
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "502":
+          description: bad gateway
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      produces:
+        - application/json
+  /euro-millions:
+    get:
+      operationId: GetEuroMillions
+      summary: Get euro million results
+      parameters:
+        - in: query
+          name: query
+          description: Query parameter in the format 'numbers:1,2,3,4,5|stars:1,2'
+          required: false
+          schema:
+            type: string
+            pattern: '^(numbers:[1-9][0-9]?(,[1-9][0-9]?){0,49}\|stars:[1-9](,[1-9]){0,11})$'
+      tags:
+        - Euro Millions
+      responses:
+        "200":
+          description: get euro million results
+          schema:
+            $ref: '#/definitions/EuroMillionResultResponse'
+        "500":
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "502":
+          description: bad gateway
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      produces:
+        - application/json
+definitions:
+  EuroMillionResponse:
+    type: object
+    properties:
+      meta:
+        type: object
+        properties:
+          service:
+            type: string
+          name:
+            type: string
+          created_at:
+            type: string
+          process:
+            type: string
+          transaction_id:
+            type: string
+          message:
+            type: string
+          status_code:
+            type: integer
+            enum:
+              - 200
+      data:
+        type: object
+        properties:
+          number_1:
+            type: number
+          number_2:
+            type: number
+          number_3:
+            type: number
+          number_4:
+            type: number
+          number_5:
+            type: number
+          star_1:
+            type: number
+          star_2:
+            type: number
+  EuroMillionResultResponse:
+    type: object
+    properties:
+      meta:
+        type: object
+        properties:
+          service:
+            type: string
+          name:
+            type: string
+          created_at:
+            type: string
+          process:
+            type: string
+          transaction_id:
+            type: string
+          message:
+            type: string
+          status_code:
+            type: integer
+            enum:
+              - 200
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            number_1:
+              type: number
+            number_2:
+              type: number
+            number_3:
+              type: number
+            number_4:
+              type: number
+            number_5:
+              type: number
+            star_1:
+              type: number
+            star_2:
+              type: number
+  ErrorResponse:
+    type: object
+    properties:
+      meta:
+        type: object
+        properties:
+          service:
+            type: string
+          name:
+            type: string
+          created_at:
+            type: string
+          process:
+            type: string
+          transaction_id:
+            type: string
+          message:
+            type: string
+          status_code:
+            type: integer
+            enum:
+              - 400
+              - 404
+              - 500
+              - 502
+            example: int
+      error:
+        type: object
+        properties:
+          title:
+            type: string
+          details:
+            type: string
